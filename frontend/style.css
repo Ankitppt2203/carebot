@@ -1,0 +1,282 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* ================= MAIN BODY ================= */
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(-45deg, #0f2027, #2c5364, #1abc9c, #3498db);
+    background-size: 400% 400%;
+    animation: gradientBG 10s ease infinite;
+}
+
+/* Background Animation */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Watermark Logo */
+body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: url("carebotlogo.svg") no-repeat center;
+    background-size: 500px;
+    opacity: 0.06;
+    z-index: -1;
+}
+
+/* ================= SPLASH ================= */
+#splash {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+    transition: opacity 0.8s ease;
+}
+
+.splash-logo {
+    width: 280px;
+    animation: logoIntro 2s ease-in-out forwards;
+}
+
+@keyframes logoIntro {
+    0% { transform: scale(0.5); opacity: 0; }
+    60% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+#main-content {
+    display: none;
+}
+
+/* ================= HEADER ================= */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    background: rgba(255,255,255,0.9);
+}
+
+.logo-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-brand img {
+    width: 50px;
+}
+
+.brand-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #4da6ff;
+}
+
+.auth-buttons {
+    margin-top: 60px;
+}
+
+/* ================= BUTTONS ================= */
+.btn {
+    padding: 8px 18px;
+    background: #1f6ed4;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-outline {
+    padding: 8px 18px;
+    border: 2px solid #1f6ed4;
+    color: #1f6ed4;
+    text-decoration: none;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+.btn-outline:hover {
+    background: white;
+    color: #2c5364;
+}
+
+/* ================= HERO ================= */
+.hero {
+    text-align: center;
+    margin-top: 120px;
+}
+
+/* ================= LOGIN PAGE FIX ================= */
+
+/* Perfect center for login page */
+.auth-body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Ensure container centers content */
+.auth-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+/* Glass Card */
+.auth-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    width: 380px;
+    border-radius: 20px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: fadeIn 1s ease forwards;
+    opacity: 0;
+    margin: auto;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.auth-card h2 {
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    font-size: 14px;
+    margin-bottom: 25px;
+    opacity: 0.8;
+}
+
+/* Input Style */
+.input-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    outline: none;
+    background: rgba(255,255,255,0.2);
+    color: white;
+    font-size: 14px;
+}
+
+.input-group label {
+    position: absolute;
+    left: 12px;
+    top: 12px;
+    font-size: 14px;
+    color: #ddd;
+    pointer-events: none;
+    transition: 0.3s ease;
+}
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: -10px;
+    left: 10px;
+    font-size: 12px;
+    background: #1abc9c;
+    padding: 2px 6px;
+    border-radius: 5px;
+    color: white;
+}
+
+/* Primary Button */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #1abc9c;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background: #16a085;
+    transform: translateY(-2px);
+}
+
+/* Divider */
+.divider {
+    height: 1px;
+    background: rgba(255,255,255,0.3);
+    margin: 25px 0;
+}
+
+/* FIX OVERLAP BETWEEN NEW MEMBER & BUTTON */
+.small-text {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 8px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* ================= DASHBOARD ================= */
+.dashboard-body {
+    min-height: 100vh;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 50px;
+}
+
+.feature-box {
+    width: 250px;
+    height: 80px;
+    background: olive;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.feature-box:hover {
+    background: #556b2f;
+}

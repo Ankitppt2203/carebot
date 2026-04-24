@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Details - CareBot</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        /* ================= RESET ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(-45deg, #0f2027, #2c5364, #1abc9c, #3498db);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Watermark Logo */
+        body::before {
+            content: "";
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url("carebotlogo.svg") no-repeat center;
+            background-size: 450px;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        /* ================= HEADER ================= */
+        header {
+            display: flex;
+            align-items: center;
+            padding: 15px 40px;
+            background: rgba(255,255,255,0.95);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .logo-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-brand img {
+            width: 45px;
+        }
+
+        .brand-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4da6ff;
+        }
+
+        /* ================= CENTER WRAPPER ================= */
+        .page-container {
+            display: flex;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        /* ================= FORM CARD ================= */
+        .form-wrapper {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255,255,255,0.95);
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .form-wrapper h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #2c5364;
+        }
+
+        form label {
+            font-weight: 600;
+            display: block;
+            margin-top: 18px;
+        }
+
+        form input,
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            transition: 0.3s ease;
+        }
+
+        form input:focus,
+        form select:focus,
+        form textarea:focus {
+            border-color: #1abc9c;
+            outline: none;
+            box-shadow: 0 0 5px rgba(26,188,156,0.4);
+        }
+
+        form textarea {
+            height: 110px;
+            resize: none;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            margin-top: 25px;
+            width: 100%;
+            padding: 14px;
+            background: olive;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: #556b2f;
+            transform: translateY(-2px);
+        }
+
+        /* ================= RESPONSIVE ================= */
+        @media (max-width: 768px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            .form-wrapper {
+                padding: 25px;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<header>
+    <div class="logo-brand">
+        <img src="carebotlogo.svg" alt="CareBot Logo">
+        <span class="brand-name">CareBot</span>
+    </div>
+</header>
+
+<div class="page-container">
+
+    <div class="form-wrapper">
+
+        <h2>Add Your Medical Details</h2>
+
+        <form>
+
+            <label>First Name *</label>
+            <input type="text" placeholder="Enter your first name" required>
+
+            <label>Surname</label>
+            <input type="text" placeholder="Enter your surname">
+
+            <label>Gender *</label>
+            <select required>
+                <option value="">Select Gender</option>
+                <option>Male</option>
+                <option>Female</option>
+                <option>Other</option>
+            </select>
+
+            <label>Age *</label>
+            <input type="number" placeholder="Enter your age" required>
+
+            <label>Height (cm)</label>
+            <input type="number" placeholder="Enter your height">
+
+            <label>Weight (kg)</label>
+            <input type="number" placeholder="Enter your weight">
+
+            <label>Blood Group</label>
+            <input type="text" placeholder="Example: O+, A-, B+">
+
+            <label>Upload Your Report (Image/PDF)</label>
+            <input type="file" accept="image/*,.pdf">
+
+            <label>More Details About Diseases</label>
+            <textarea placeholder="Describe your medical condition or history..."></textarea>
+
+            <button type="submit" class="submit-btn">Submit</button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

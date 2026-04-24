@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - CareBot</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Password Toggle Styling */
+        .password-group {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 16px;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-wrapper">
+    <div class="auth-card">
+        <h2>Welcome Back 👋</h2>
+        <p class="subtitle">Sign in to continue to CareBot</p>
+
+        <form id="loginForm">
+            
+            <!-- Email -->
+            <div class="input-group">
+                <input type="email" id="email" required>
+                <label>Email</label>
+            </div>
+
+            <!-- Password with Eye Toggle -->
+            <div class="input-group password-group">
+                <input type="password" id="password" required>
+                <label>Password</label>
+                <span class="toggle-password" onclick="togglePassword()">👁</span>
+            </div>
+
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+
+        <!-- Message Area -->
+        <p id="message" style="color:red; margin-top:10px;"></p>
+
+        <div class="divider"></div>
+
+        <p class="small-text">New Member?</p>
+        <a href="register.html" class="btn-outline">Create Account</a>
+    </div>
+</div>
+
+<script src="script.js"></script>
+
+<script>
+    // Toggle Password Function
+    function togglePassword() {
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = document.querySelector(".toggle-password");
+
+        if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            toggleIcon.innerText = "🙈";
+        } else {
+            passwordInput.type = "password";
+            toggleIcon.innerText = "👁";
+        }
+    }
+</script>
+
+</body>
+</html>

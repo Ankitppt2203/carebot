@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CareBot Smart Navigation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f7fb;
+        }
+
+        header {
+            background: #8a8f00;
+            color: white;
+            padding: 15px 20px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        #map {
+            height: 520px;
+            width: 95%;
+            margin: 20px auto;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-box {
+            width: 95%;
+            margin: 10px auto;
+            padding: 12px;
+            background: white;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .pulse-dot {
+            width: 18px;
+            height: 18px;
+            background: #1e90ff;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .pulse-dot::after {
+            content: "";
+            width: 18px;
+            height: 18px;
+            background: #1e90ff;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: pulse 1.5s infinite;
+            opacity: 0.6;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<header>🏥 CareBot Hospital Navigation</header>
+
+<div id="map"></div>
+
+<div class="info-box" id="routeInfo">
+    Select any hospital to see route details.
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+<script>
+
+let map;
+let userLat, userLon;
+let routeLayer = null;
+let destinationMarker = null;
+let userMarker;
+
+function initMap(lat, lon) {
+
+    userLat = lat;
+    userLon = lon;
+
+    map = L.map('map').setView([lat, lon], 14);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const userIcon = L.divIcon({
+        className: '',
+        html: '<div class="pulse-dot"></div>',
+        iconSize: [18,18]
+    });
+
+    userMarker = L.marker([lat, lon], { icon: userIcon })
+        .addTo(map)
+        .bindPopup("📍 You are here")
+        .openPopup();
+
+    loadHospitals();
+}
+
+function loadHospitals() {
+
+    let query = `
+        [out:json];
+        node["amenity"="hospital"](around:5000,${userLat},${userLon});
+        out;
+    `;
+
+    fetch("https://overpass-api.de/api/interpreter", {
+        method: "POST",
+        body: query
+    })
+    .then(res => res.json())
+    .then(data => {
+
+        data.elements.forEach(hospital => {
+
+            let marker = L.marker([hospital.lat, hospital.lon])
+                .addTo(map)
+                .bindPopup("🏥 " + (hospital.tags.name || "Hospital"));
+
+            marker.on("click", function() {
+                updateRoute(hospital.lat, hospital.lon, hospital.tags.name || "Hospital");
+            });
+
+        });
+
+    });
+}
+
+function updateRoute(destLat, destLon, hospitalName) {
+
+    if(routeLayer){
+        map.removeLayer(routeLayer);
+    }
+
+    if(destinationMarker){
+        map.removeLayer(destinationMarker);
+    }
+
+    let url = `https://router.project-osrm.org/route/v1/driving/` +
+              `${userLon},${userLat};${destLon},${destLat}` +
+              `?overview=full&geometries=geojson`;
+
+    fetch(url)
+    .then(res => res.json())
+    .then(data => {
+
+        if(!data.routes || !data.routes.length){
+            alert("Route not available.");
+            return;
+        }
+
+        let route = data.routes[0];
+
+        let distanceKm = (route.distance / 1000).toFixed(2);
+        let durationMin = (route.duration / 60).toFixed(0);
+
+        routeLayer = L.geoJSON(route.geometry, {
+            style: {
+                color: "#1e88e5",
+                weight: 6
+            }
+        }).addTo(map);
+
+        destinationMarker = L.marker([destLat, destLon])
+            .addTo(map)
+            .bindPopup(`🏥 ${hospitalName}<br>
+                        🚗 ${distanceKm} km<br>
+                        ⏱ ${durationMin} min (Car)`)
+            .openPopup();
+
+        document.getElementById("routeInfo").innerHTML =
+            `<strong>${hospitalName}</strong><br>
+             🚗 Distance: ${distanceKm} km<br>
+             ⏱ Estimated Time (Car): ${durationMin} minutes`;
+
+        // IMPORTANT FIX:
+        // Keep user visible + smooth zoom
+        let group = L.featureGroup([userMarker, destinationMarker]);
+        map.fitBounds(group.getBounds(), { padding: [80,80] });
+
+    })
+    .catch(err => {
+        console.error(err);
+        alert("Routing error.");
+    });
+}
+
+
+// Get location
+if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(
+        function(position){
+            initMap(position.coords.latitude, position.coords.longitude);
+        },
+        function(){
+            alert("Please allow location access.");
+        }
+    );
+} else {
+    alert("Geolocation not supported.");
+}
+
+</script>
+
+</body>
+</html>
