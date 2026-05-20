@@ -8,35 +8,39 @@ const authMiddleware = require("./middleware/authMiddleware");
 
 const app = express();
 
-// Middleware (VERY IMPORTANT ORDER)
+// ================= MIDDLEWARE =================
 app.use(express.json());
-app.use(cors());
 
-// Routes
+app.use(cors({
+    origin: "https://guileless-florentine-d7e633.netlify.app",
+    credentials: true
+}));
+
+// ================= ROUTES =================
 app.use("/api", authRoutes);
 app.use("/api", chatRoutes);
 
-// MongoDB Connection
-mongoose.connect("mongodb://127.0.0.1:27017/carebot")
-  .then(() => console.log("MongoDB Connected ✅"))
-  .catch((err) => console.log(err));
+// ================= MONGODB CONNECTION =================
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log("MongoDB Connected ✅"))
+    .catch((err) => console.log(err));
 
-// Test Route
+// ================= TEST ROUTE =================
 app.get("/", (req, res) => {
-  res.send("CareBot Backend Running 🚀");
+    res.send("CareBot Backend Running 🚀");
 });
 
-// Protected Test Route
+// ================= PROTECTED ROUTE =================
 app.get("/api/profile", authMiddleware, (req, res) => {
-  res.json({
-    message: "Welcome to protected profile route 🔐",
-    userId: req.user.id
-  });
+    res.json({
+        message: "Welcome to protected profile route 🔐",
+        userId: req.user.id
+    });
 });
 
-// Server Port
-const PORT = 5000;
+// ================= SERVER =================
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
