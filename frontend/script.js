@@ -27,7 +27,7 @@ if (loginForm) {
         const message = document.getElementById("message");
 
         try {
-            const response = await fetch("http://localhost:5000/api/login", {
+            const response = await fetch("https://carebot-production-4690.up.railway.app/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -71,7 +71,7 @@ if (registerForm) {
         }
 
         try {
-            const response = await fetch("http://localhost:5000/api/register", {
+            const response = await fetch("https://carebot-production-4690.up.railway.app/api/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
